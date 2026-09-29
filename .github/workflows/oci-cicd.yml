@@ -4,8 +4,11 @@ name: "Execute OCI Pipeline"
 
 on:
   workflow_dispatch:
+
 env:
   OCI_CLI_REGION: us-phoenix-1
+  OCI_RESOURCE_PRINCIPAL_REGION: us-phoenix-1
+  TF_VAR_region: us-phoenix-1
 
 permissions:
   contents: read
@@ -28,11 +31,16 @@ jobs:
         uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
         with:
           node-version: "24"
+
       - name: Debug Region
         run: |
-           echo "OCI_CLI_REGION=$OCI_CLI_REGION"
-            echo "OCI_REGION=$OCI_REGION"
-             env | grep -i oci
+          echo "OCI_CLI_REGION=$OCI_CLI_REGION"
+          echo "OCI_REGION=$OCI_REGION"
+          echo "OCI_RESOURCE_PRINCIPAL_REGION=$OCI_RESOURCE_PRINCIPAL_REGION"
+          echo "TF_VAR_region=$TF_VAR_region"
+          env | grep -i oci || true
+          grep -n "region" main.tf || true
+          grep -n "region" oci-stack-module/main.tf || true
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@dfe3c3f87815947d99a8997f908cb6525fc44e9e # v4.0.1
@@ -56,21 +64,8 @@ jobs:
         run: terraform init
 
       - name: Terraform Plan
-        run: terraform plan
+        run: terraform plan -out=tfplan
 
       - name: Terraform Apply
         id: apply
-        continue-on-error: true
-        run: terraform apply -auto-approve
-
-      - name: Check Terraform Apply Outcome
-        id: check
-        run: echo "apply_failed=${{ steps.apply.outcome == 'failure' }}" >> $GITHUB_ENV
-
-      - name: Terraform Destroy
-        if: env.apply_failed == 'true'
-        id: failure-handler
-        run: |
-          echo "Terraform Apply failed. Initiating cleanup..."
-          terraform destroy -auto-approve
-          echo "cleanup_done=true" >> $GITHUB_ENV
+        run: terraform apply -auto-approve tfplan
