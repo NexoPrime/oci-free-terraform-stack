@@ -4,6 +4,8 @@ name: "Execute OCI Pipeline"
 
 on:
   workflow_dispatch:
+env:
+  OCI_CLI_REGION: us-phoenix-1
 
 permissions:
   contents: read
