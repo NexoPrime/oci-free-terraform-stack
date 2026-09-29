@@ -252,7 +252,7 @@ resource "oci_core_instance" "vm_instance_ampere" {
 
 resource "oci_core_instance" "vm_instance_x86_64" {
   count                               = 2
-  availability_domain                 = data.oci_identity_availability_domains.ads.availability_domains[0].name
+  availability_domain                 = "JdEM:PHX-AD-2"
   compartment_id                      = oci_identity_compartment.oci_stack.id
   shape                               = "VM.Standard.E2.1.Micro"
   display_name                        = join("", [var.vm_name, "0", count.index + 1])
@@ -342,5 +342,4 @@ resource "oci_core_volume_backup_policy_assignment" "backup_policy_assignment" {
     oci_core_instance.vm_instance_ampere
   ]
 }
-
 
