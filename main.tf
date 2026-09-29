@@ -20,10 +20,10 @@ module "oci-stack" {
   user_ocid                = var.user_ocid
   compartment_name         = "oci-stack"
   fingerprint              = var.fp
-  region                   = "uk-london-1"
+  region                   = "us-phoenix-1"
   vm_name                  = "oci-stack-instance"
-  vm_image_ocid_x86_64     = "ocid1.image.oc1.uk-london-1.aaaaaaaaojqrgcwxe5ft3tcoccighpeavtpnv5jcgi7pbvssqgibz7mczjeq"
-  vm_image_ocid_ampere     = "ocid1.image.oc1.uk-london-1.aaaaaaaa57kek4gtk6exlfu7yijjsa26bdmm42ibogeqi7ehwah5fxd6ybda"
+  vm_image_ocid_x86_64     = "ocid1.image.oc1.phx.aaaaaaaaqyjflcpvx3m5m64msmmurtu2jrmpygdbmpkcbckwxfqhnec55btq"
+  vm_image_ocid_ampere     = "ocid1.image.oc1.phx.aaaaaaaa3htgy3oa7plx4lplqke6ktlcseujdowjd4qtatppabxskx6otlja"
   private_key_path         = var.pkey_path
   ssh_public_key           = var.ssh_pub_key
   tags                     = { Project = "oci-tf-stack" }
