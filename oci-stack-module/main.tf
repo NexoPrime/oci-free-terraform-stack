@@ -16,7 +16,8 @@ provider "oci" {
   user_ocid             = var.user_ocid
   private_key_path      = var.private_key_path
   fingerprint           = var.fingerprint
-  region                = var.region
+  region                = "us-phoenix-1"
+  
 }
 
 # Define local variables for cloud-init template files.
